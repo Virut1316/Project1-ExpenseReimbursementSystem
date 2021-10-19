@@ -12,6 +12,9 @@ public class Reimbursement {
 	private ReimbursementStatus status;
 	private ReimbursementType type;
 	
+	public Reimbursement() {
+		
+	}
 	public Reimbursement(int id, int amount, String submitted, String resolved, String description, String receipt,
 			User author, User resolver, ReimbursementStatus status, ReimbursementType type) {
 		super();
