@@ -9,6 +9,9 @@ public class ReimbursementType {
 		this.id = id;
 		this.type = type;
 	}
+	public ReimbursementType() {
+		
+	}
 	public int getId() {
 		return id;
 	}

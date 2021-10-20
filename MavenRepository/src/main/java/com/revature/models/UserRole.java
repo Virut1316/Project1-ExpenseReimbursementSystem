@@ -10,6 +10,9 @@ public class UserRole {
 		this.id = id;
 		this.role = role;
 	}
+	public UserRole() {
+		// TODO Auto-generated constructor stub
+	}
 	public int getId() {
 		return id;
 	}
@@ -22,6 +25,11 @@ public class UserRole {
 	public void setRole(String role) {
 		this.role = role;
 	}
+	@Override
+	public String toString() {
+		return "UserRole [id=" + id + ", role=" + role + "]";
+	}
+	
 	
 	
 }
