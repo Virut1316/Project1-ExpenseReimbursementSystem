@@ -164,6 +164,31 @@ public class UserDao implements Dao<User>{
 		
 		return userRole;
 	}
+	
+	public User getElement(String username) { //Should return null if no data is returned
+		
+		Connection connection = config.getConnection();
+		User user =new User();
+		String sql = "Select * from Users where username=?";
+		
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, username);
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next()) {
+				user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), getRole(rs.getInt(7)));
+			}
+			
+		}
+		catch(Exception e) {
+			user = null;
+		}
+		
+		return user;
+	}
+
 
 
 }

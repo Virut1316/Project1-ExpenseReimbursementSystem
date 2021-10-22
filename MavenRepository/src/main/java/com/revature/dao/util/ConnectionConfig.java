@@ -47,6 +47,7 @@ public class ConnectionConfig {
 		
 		
 		try {
+			Class.forName("org.postgresql.Driver");
 			Connection connection = DriverManager.getConnection(url+":"+port+"/"+database, username, password); //We get the actual connection and return it
 			return connection;
 		} catch(Exception e) {
