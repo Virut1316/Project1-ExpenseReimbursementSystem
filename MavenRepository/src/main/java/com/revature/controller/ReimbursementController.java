@@ -3,6 +3,7 @@ package com.revature.controller;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -192,5 +193,50 @@ public class ReimbursementController {
 		}
 	}
 	
+	public static void getAllPendingRequests(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException {
+
+		if(!req.getMethod().equals("GET")) {
+			return;
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			
+			ArrayList<Reimbursement> reimbursement = (ArrayList<Reimbursement>) rServ.getAllPendingReimbursements();
+			res.setStatus(200);
+			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursement));
+			
+		}catch (Exception e) {
+			ObjectNode errorInfo = mapper.createObjectNode();
+			res.setStatus(403);
+			//errorInfo.put("code", 403);
+			errorInfo.put("message", e.getMessage());
+			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+		}
+	}
+	
+	public static void getAllResolvedRequests(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException {
+
+		if(!req.getMethod().equals("GET")) {
+			return;
+		}
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			
+			ArrayList<Reimbursement> reimbursement = (ArrayList<Reimbursement>) rServ.getAllResolvedReimbursements();
+			res.setStatus(200);
+			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursement));
+			
+		}catch (Exception e) {
+			ObjectNode errorInfo = mapper.createObjectNode();
+			res.setStatus(403);
+			//errorInfo.put("code", 403);
+			errorInfo.put("message", e.getMessage());
+			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+		}
+	}
 	
 }

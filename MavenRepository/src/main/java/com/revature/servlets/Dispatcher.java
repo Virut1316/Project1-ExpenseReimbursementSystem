@@ -17,28 +17,36 @@ public class Dispatcher {
 		System.out.println("Here: "+req.getRequestURI());
 		
 		switch (req.getRequestURI()) {
-		case "/project1-ERS/api/login":
+		case "/project1-ERS/api/login": //gets an user if its on DB or an error message on exceptions
 			LoginController.login(req, res);
 			break;
 			
-		case "/project1-ERS/api/session":
+		case "/project1-ERS/api/session": //gets session user id
 			SessionController.getSession(req, res);
 			break;
 		
-		case "/project1-ERS/api/reimbursement/create":
+		case "/project1-ERS/api/reimbursement/create": //Creates a new reimbursement, returns message exception if not
 			ReimbursementController.newRequest(req, res);;
 			break;
 			
-		case "/project1-ERS/api/reimbursement/pending-requests":
+		case "/project1-ERS/api/reimbursement/pending-requests": // gets all pending requests of a User
 			ReimbursementController.getPendingRequests(req, res);;
 			break;
 			
-		case "/project1-ERS/api/reimbursement/resolved-requests":
+		case "/project1-ERS/api/reimbursement/resolved-requests": // gets all resolved requests of a User
 			ReimbursementController.getResolvedRequests(req, res);;
 			break;
 			
-		case "/project1-ERS/api/reimbursement/approve-or-deny":
+		case "/project1-ERS/api/reimbursement/approve-or-deny": // Updates a reimbursement to a resolved, sets deny or approve
 			ReimbursementController.approveDenyRequest(req, res);;
+			break;
+			
+		case "/project1-ERS/api/reimbursement/all-pending": //gets all pending reimbursements of all users
+			ReimbursementController.getAllPendingRequests(req, res);;
+			break;
+			
+		case "/project1-ERS/api/reimbursement/all-resolved": //gets all resolved reimbursements of all users
+			ReimbursementController.getAllResolvedRequests(req, res);;
 			break;
 			
 		default:

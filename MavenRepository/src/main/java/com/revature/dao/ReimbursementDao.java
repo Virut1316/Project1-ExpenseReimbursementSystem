@@ -324,5 +324,67 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		
 		return reimbursements;
 	}
+	
+	public List<Reimbursement> getAllResolvedElements() {
+		Connection connection = config.getConnection();
+		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
+		UserDao userDao = new UserDao();
+		String sql = "Select * from Reimbursement where reimb_status_id<>1";
+		
+		try {
+			Statement statement = connection.createStatement();
+			
+			
+			ResultSet rs = statement.executeQuery(sql);
+			
+			while(rs.next()) {
+				User author = null;
+				int authorId=rs.getInt(8);
+				if(!rs.wasNull())
+					author = userDao.getElement(authorId);
+					
+				
+				reimbursements.add(new Reimbursement(rs.getInt(1), rs.getInt(2), rs.getString(3), 
+												 rs.getString(4), rs.getString(5), rs.getString(6), 
+												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
+			}
+		}
+		catch(Exception e) {
+			reimbursements = null;
+		}
+		
+		return reimbursements;
+	}
+	
+	public List<Reimbursement> getAllPendingElements() {
+		Connection connection = config.getConnection();
+		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
+		UserDao userDao = new UserDao();
+		String sql = "Select * from Reimbursement where reimb_status_id=1";
+		
+		try {
+			Statement statement = connection.createStatement();
+			
+			
+			ResultSet rs = statement.executeQuery(sql);
+			
+			while(rs.next()) {
+				User author = null;
+				int authorId=rs.getInt(8);
+				if(!rs.wasNull())
+					author = userDao.getElement(authorId);
+					
+				
+				reimbursements.add(new Reimbursement(rs.getInt(1), rs.getInt(2), rs.getString(3), 
+												 rs.getString(4), rs.getString(5), rs.getString(6), 
+												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
+			}
+		}
+		catch(Exception e) {
+			reimbursements = null;
+		}
+		
+		return reimbursements;
+	}
 
 }
