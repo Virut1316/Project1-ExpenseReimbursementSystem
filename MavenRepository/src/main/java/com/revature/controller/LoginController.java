@@ -51,7 +51,7 @@ public class LoginController {
 		} catch(Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
-			//errorInfo.put("code", 403);
+			errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}

@@ -30,7 +30,7 @@ async function login (e){
 
     console.log(res);
 
-    if(res.code == 403){
+    if(res.code== 403){
         console.log(res.message);
         //add logic of displaying error info to user
     }
