@@ -23,7 +23,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		Connection connection = config.getConnection();
 		Reimbursement reimbursement =new Reimbursement();
 		UserDao userDao = new UserDao();
-		String sql = "Select * from Reimbursment where reimb_id=?";
+		String sql = "Select * from Reimbursement where reimb_id=?";
 		
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -45,6 +45,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		}
 		catch(Exception e) {
 			reimbursement = null;
+			
 		}
 		
 		
@@ -58,7 +59,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		Connection connection = config.getConnection();
 		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
 		UserDao userDao = new UserDao();
-		String sql = "Select * from Reimbursment";
+		String sql = "Select * from Reimbursement";
 		
 		try {
 			Statement statement = connection.createStatement();
@@ -180,7 +181,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 
 		Connection connection = config.getConnection();
 		ReimbursementStatus reimbursementStatus =new ReimbursementStatus();
-		String sql = "Select * from Reimbursment_status where reimb_status_id=?";
+		String sql = "Select * from Reimbursement_status where reimb_status_id=?";
 		
 		try {
 			PreparedStatement preparesStatement = connection.prepareStatement(sql);
@@ -203,7 +204,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 	private ReimbursementType getType(int id) {
 		Connection connection = config.getConnection();
 		ReimbursementType reimbursementType =new ReimbursementType();
-		String sql = "Select * from Reimbursment_type where reimb_type_id=?";
+		String sql = "Select * from Reimbursement_type where reimb_type_id=?";
 		
 		try {
 			PreparedStatement preparesStatement = connection.prepareStatement(sql);
@@ -224,6 +225,101 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		return reimbursementType;
 	}
 	
-
+	public List<Reimbursement> getAllElements(int aId) {
+		Connection connection = config.getConnection();
+		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
+		UserDao userDao = new UserDao();
+		String sql = "Select * from Reimbursement where reimb_author=?";
+		
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, aId);
+			
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next()) {
+				User author = null;
+				int authorId=rs.getInt(8);
+				if(!rs.wasNull())
+					author = userDao.getElement(authorId);
+					
+				
+				reimbursements.add(new Reimbursement(rs.getInt(1), rs.getInt(2), rs.getString(3), 
+												 rs.getString(4), rs.getString(5), rs.getString(6), 
+												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
+			}
+		}
+		catch(Exception e) {
+			reimbursements = null;
+		}
+		
+		return reimbursements;
+	}
+	
+	public List<Reimbursement> getAllPendingElements(int aId) {
+		Connection connection = config.getConnection();
+		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
+		UserDao userDao = new UserDao();
+		String sql = "Select * from Reimbursement where reimb_author=? AND reimb_status_id=1";
+		
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, aId);
+			
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next()) {
+				User author = null;
+				int authorId=rs.getInt(8);
+				if(!rs.wasNull())
+					author = userDao.getElement(authorId);
+					
+				
+				reimbursements.add(new Reimbursement(rs.getInt(1), rs.getInt(2), rs.getString(3), 
+												 rs.getString(4), rs.getString(5), rs.getString(6), 
+												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
+			}
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+			reimbursements = null;
+		}
+		
+		return reimbursements;
+	}
+	
+	public List<Reimbursement> getAllResolvedElements(int aId) {
+		Connection connection = config.getConnection();
+		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
+		UserDao userDao = new UserDao();
+		String sql = "Select * from Reimbursement where reimb_author=? AND reimb_status_id<>1";
+		
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setInt(1, aId);
+			
+			
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next()) {
+				User author = null;
+				int authorId=rs.getInt(8);
+				if(!rs.wasNull())
+					author = userDao.getElement(authorId);
+					
+				
+				reimbursements.add(new Reimbursement(rs.getInt(1), rs.getInt(2), rs.getString(3), 
+												 rs.getString(4), rs.getString(5), rs.getString(6), 
+												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
+			}
+		}
+		catch(Exception e) {
+			reimbursements = null;
+		}
+		
+		return reimbursements;
+	}
 
 }

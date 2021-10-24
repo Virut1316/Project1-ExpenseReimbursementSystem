@@ -2,6 +2,7 @@ package com.revature.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -73,6 +74,80 @@ public class ReimbursementController {
 			errorInfo.put("message", e.getMessage());
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
+		
+	}
+	
+	public static void getPendingRequests(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException{
+		
+		StringBuilder buffer = new StringBuilder();
+		BufferedReader reader = req.getReader();
+		
+		String line;
+		while((line = reader.readLine()) != null) {
+			buffer.append(line);
+			buffer.append(System.lineSeparator());
+		}
+		
+		String data = buffer.toString();
+		System.out.println(data);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode parsedObj = mapper.readTree(data);
+		
+		int authorId = Integer.parseInt(parsedObj.get("authorId").asText());
+		
+		
+		try {
+			
+			ArrayList<Reimbursement> reimbursements =(ArrayList<Reimbursement>) rServ.getPendingReimbursement(authorId);
+			res.setStatus(200);
+			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursements));
+			
+		}catch (Exception e) {
+			ObjectNode errorInfo = mapper.createObjectNode();
+			res.setStatus(403);
+			//errorInfo.put("code", 403);
+			errorInfo.put("message", e.getMessage());
+			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+		}
+		
+		
+	}
+	
+	public static void getResolvedRequests(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException{
+		
+		StringBuilder buffer = new StringBuilder();
+		BufferedReader reader = req.getReader();
+		
+		String line;
+		while((line = reader.readLine()) != null) {
+			buffer.append(line);
+			buffer.append(System.lineSeparator());
+		}
+		
+		String data = buffer.toString();
+		System.out.println(data);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode parsedObj = mapper.readTree(data);
+		
+		int authorId = Integer.parseInt(parsedObj.get("authorId").asText());
+		
+		
+		try {
+			
+			ArrayList<Reimbursement> reimbursements =(ArrayList<Reimbursement>) rServ.getResolvedReimbursement(authorId);
+			res.setStatus(200);
+			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursements));
+			
+		}catch (Exception e) {
+			ObjectNode errorInfo = mapper.createObjectNode();
+			res.setStatus(403);
+			//errorInfo.put("code", 403);
+			errorInfo.put("message", e.getMessage());
+			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+		}
+		
 		
 	}
 	
