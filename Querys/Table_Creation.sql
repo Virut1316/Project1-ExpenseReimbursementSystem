@@ -24,9 +24,9 @@ create table if not exists Users (
 
 create table if not exists Reimbursement (
 	reimb_id				int primary key generated always as identity,
-	reimb_amount			int unique not null,
-	reimb_submitted			timestamp with time zone not null,
-	reimb_resolved			timestamp with time zone,
+	reimb_amount			int not null,
+	reimb_submitted			timestamp not null,
+	reimb_resolved			timestamp,
 	reimb_description		varchar(250),
 	reimb_receipt			bytea,
 	reimb_author			int not null references Users(users_id),

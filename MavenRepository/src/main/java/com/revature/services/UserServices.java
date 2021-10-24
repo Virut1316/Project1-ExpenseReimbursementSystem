@@ -21,6 +21,8 @@ public class UserServices {
 		
 		if(user==null)
 			throw new DatabaseConnectionFailedException();
+		else if (user.getPassword()==null)
+			throw new UserNotFoundException();
 		else if (!user.getPassword().equals(password))
 			throw  new IncorrectPasswordException();
 		

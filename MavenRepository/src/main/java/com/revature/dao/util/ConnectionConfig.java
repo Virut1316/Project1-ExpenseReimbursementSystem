@@ -48,7 +48,10 @@ public class ConnectionConfig {
 		
 		try {
 			Class.forName("org.postgresql.Driver");
-			Connection connection = DriverManager.getConnection(url+":"+port+"/"+database, username, password); //We get the actual connection and return it
+			//https://jdbc.postgresql.org/documentation/head/connect.html#connection-parameters
+			//Adding a new parameter to save dates as a string and convert them to timestamp
+			String property = "stringtype=unspecified";
+			Connection connection = DriverManager.getConnection(url+":"+port+"/"+database+"?"+property, username, password); //We get the actual connection and return it
 			return connection;
 		} catch(Exception e) {
 			//System.out.print("Database connection failed");

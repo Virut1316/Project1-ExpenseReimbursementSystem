@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.revature.dao.Dao;
 import com.revature.dao.UserDao;
 import com.revature.models.User;
@@ -21,10 +22,7 @@ public class LoginController {
 	
 	public static void login(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException {
 		
-		//To read in stringified JSON data from a POST request is a little more complicated than reading form data
 		StringBuilder buffer = new StringBuilder();
-		
-		//The buffered reader will read the json data line by line
 		BufferedReader reader = req.getReader();
 		
 		String line;
@@ -51,8 +49,11 @@ public class LoginController {
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(u));
 		} catch(Exception e) {
+			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
-			res.getWriter().println("Username or password incorrect");
+			//errorInfo.put("code", 403);
+			errorInfo.put("message", e.getMessage());
+			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
 		
 	}

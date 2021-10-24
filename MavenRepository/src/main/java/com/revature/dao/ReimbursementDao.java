@@ -90,8 +90,9 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		Connection connection = config.getConnection();
 		String sql = "INSERT INTO public.reimbursement "
 				+ "(reimb_amount, reimb_submitted, reimb_resolved, reimb_description, reimb_receipt, reimb_author, reimb_resolver, "
-				+ "reimb_status_id, reimb_type_id)VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "reimb_status_id, reimb_type_id)VALUES(?, TO_TIMESTAMP(?,'MM-DD-YYYY HH24:MI:SS'), ?, ?, ?, ?, ?, ?, ?)";
 
+		//TO_TIMESTAMP(?,'MM-DD-YYYY HH:MI:SS')
 		
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -101,15 +102,19 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			preparedStatement.setString(4, element.getDescription());
 			preparedStatement.setString(5, element.getReceipt());
 			preparedStatement.setInt(6, element.getAuthor().getId());
-			preparedStatement.setInt(7, element.getResolver().getId()==0?null:element.getResolver().getId());
+			preparedStatement.setObject(7, element.getResolver().getId()==0?null:element.getResolver().getId());
 			preparedStatement.setInt(8, element.getStatus().getId());
 			preparedStatement.setInt(9, element.getType().getId());
 			
-			preparedStatement.executeUpdate();
-						
+			int state =preparedStatement.executeUpdate();
+			
+			if(state == 0)
+				element = new Reimbursement();
+			
 		}
 		catch(Exception e) {
 			element = null;
+			e.printStackTrace();
 		}
 		return element;
 		
