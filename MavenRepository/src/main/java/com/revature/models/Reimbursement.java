@@ -109,6 +109,14 @@ public class Reimbursement {
 	public void setType(ReimbursementType type) {
 		this.type = type;
 	}
+	@Override
+	public String toString() {
+		return "Reimbursement [id=" + id + ", amount=" + amount + ", submitted=" + submitted + ", resolved=" + resolved
+				+ ", description=" + description + ", receipt=" + receipt + ", author=" + author + ", resolver="
+				+ resolver + ", status=" + status + ", type=" + type + "]";
+	}
+	
+	
 	
 	
 }

@@ -151,5 +151,46 @@ public class ReimbursementController {
 		
 	}
 	
+	public static void approveDenyRequest(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException {
+		
+		StringBuilder buffer = new StringBuilder();
+		BufferedReader reader = req.getReader();
+		
+		String line;
+		while((line = reader.readLine()) != null) {
+			buffer.append(line);
+			buffer.append(System.lineSeparator());
+		}
+		
+		String data = buffer.toString();
+		System.out.println(data);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode parsedObj = mapper.readTree(data);
+		
+		int reimbursementId = Integer.parseInt(parsedObj.get("reimbursementId").asText());
+		String resolvedTime = parsedObj.get("resolved").asText();
+		int authorId = Integer.parseInt(parsedObj.get("resolverId").asText());
+		User resolverUser = new User();
+		resolverUser.setId(authorId);
+		int statusId = Integer.parseInt(parsedObj.get("statusId").asText());
+		ReimbursementStatus status = new ReimbursementStatus();
+		status.setId(statusId);
+
+		try {
+			
+			Reimbursement u =rServ.approveDenyReimbursement(new Reimbursement(reimbursementId, 0, null, resolvedTime, null, null, null, resolverUser, status, null));
+			res.setStatus(200);
+			res.getWriter().write(new ObjectMapper().writeValueAsString(u));
+			
+		}catch (Exception e) {
+			ObjectNode errorInfo = mapper.createObjectNode();
+			res.setStatus(403);
+			//errorInfo.put("code", 403);
+			errorInfo.put("message", e.getMessage());
+			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+		}
+	}
+	
 	
 }

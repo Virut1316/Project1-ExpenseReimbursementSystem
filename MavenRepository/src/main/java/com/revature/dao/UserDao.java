@@ -20,7 +20,7 @@ public class UserDao implements Dao<User>{
 		
 		Connection connection = config.getConnection();
 		User user =new User();
-		String sql = "Select * from Users where id=?";
+		String sql = "Select * from Users where users_id=?";
 		
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -35,6 +35,7 @@ public class UserDao implements Dao<User>{
 		}
 		catch(Exception e) {
 			user = null;
+			e.printStackTrace();
 		}
 		
 		return user;
@@ -124,7 +125,7 @@ public class UserDao implements Dao<User>{
 	public boolean deleteElement(int id) {
 		Connection connection = config.getConnection();
 		boolean success=true;
-		String sql = "DELETE FROM public.users WHERE user_id=?";
+		String sql = "DELETE FROM public.users WHERE users_id=?";
 
 		
 		try {

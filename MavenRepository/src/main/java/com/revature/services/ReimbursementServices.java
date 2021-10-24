@@ -51,7 +51,7 @@ public class ReimbursementServices {
 	}
 	
 	
-	public List<Reimbursement> getResolvedReimbursement(int authorId){
+	public List<Reimbursement> getResolvedReimbursement(int authorId)  throws DatabaseConnectionFailedException,NotReimbursementsException{
 		
 		
 		ArrayList<Reimbursement> reimbursements = new ArrayList<Reimbursement>();
@@ -64,6 +64,27 @@ public class ReimbursementServices {
 			throw new NotReimbursementsException();
 		
 		return reimbursements;
+	}
+	
+	public Reimbursement approveDenyReimbursement(Reimbursement reimbursement) {
+		
+		Reimbursement reimbursementInDB = rDao.getElement(reimbursement.getId());
+		System.out.println(reimbursementInDB.toString());
+		
+		if(reimbursementInDB==null)
+			throw new DatabaseConnectionFailedException();
+		else if(reimbursementInDB.getId()==0)
+			throw new NotReimbursementsException();
+		else
+			reimbursement = rDao.updateElement(new Reimbursement(reimbursement.getId(), reimbursementInDB.getAmount(), 
+						reimbursementInDB.getSubmitted(), reimbursement.getResolved(), 
+						reimbursementInDB.getDescription(), reimbursementInDB.getReceipt(), 
+						reimbursementInDB.getAuthor(), reimbursement.getResolver(), 
+						rDao.getStatus(reimbursement.getStatus().getId()), rDao.getType(reimbursementInDB.getType().getId())));
+		
+		
+		
+		return reimbursement;
 	}
 	
 	

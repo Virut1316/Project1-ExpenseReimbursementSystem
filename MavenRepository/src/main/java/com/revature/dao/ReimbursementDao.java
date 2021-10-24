@@ -1,5 +1,6 @@
 package com.revature.dao;
 
+import java.io.Console;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -33,14 +34,15 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			
 			while(rs.next()) {
 				
-				User author = null;
+				User resolver = null;
 				int authorId=rs.getInt(8);
 				if(!rs.wasNull())
-					author = userDao.getElement(authorId);
+					resolver = userDao.getElement(authorId);
 				
 				reimbursement = new Reimbursement(rs.getInt(1), rs.getInt(2), rs.getString(3), 
 												 rs.getString(4), rs.getString(5), rs.getString(6), 
-												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10)));
+												 userDao.getElement(rs.getInt(7)), resolver, getStatus(rs.getInt(9)), getType(rs.getInt(10)));
+				
 			}
 		}
 		catch(Exception e) {
@@ -149,6 +151,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		}
 		catch(Exception e) {
 			element = null;
+			//e.printStackTrace();
 		}
 		return element;
 
@@ -176,7 +179,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 	}
 	
 	
-	private ReimbursementStatus getStatus(int id) {
+	public ReimbursementStatus getStatus(int id) {
 		
 
 		Connection connection = config.getConnection();
@@ -201,7 +204,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		return reimbursementStatus;
 	}
 
-	private ReimbursementType getType(int id) {
+	public ReimbursementType getType(int id) {
 		Connection connection = config.getConnection();
 		ReimbursementType reimbursementType =new ReimbursementType();
 		String sql = "Select * from Reimbursement_type where reimb_type_id=?";

@@ -37,6 +37,10 @@ public class Dispatcher {
 			ReimbursementController.getResolvedRequests(req, res);;
 			break;
 			
+		case "/project1-ERS/api/reimbursement/approve-or-deny":
+			ReimbursementController.approveDenyRequest(req, res);;
+			break;
+			
 		default:
 			System.out.println("Something went wrong");
 			break;
