@@ -24,15 +24,15 @@ async function login (e){
 
 
     });
-    //console.log(req);
-
+    //console.log(req)   ;
+ 
     let res = await req.json();
 
     console.log(res);
 
     if(res.code== 403){
         console.log(res.message);
-        //add logic of displaying error info to user
+        alert(res.message);
     }
     else
        location.href = '../html/home.html';

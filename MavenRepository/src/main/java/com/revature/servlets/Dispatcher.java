@@ -30,7 +30,7 @@ public class Dispatcher {
 			SessionController.logOut(req, res);
 			break;
 			
-		case "/project1-ERS/api/reimbursement": //Creates a new reimbursement, returns message exception if not
+		case "/project1-ERS/api/reimbursement": //Gets a reimbursement whit its Id
 			ReimbursementController.getReimbursement(req, res);;
 			break;
 			
