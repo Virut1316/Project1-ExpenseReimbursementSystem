@@ -35,4 +35,27 @@ public class SessionController {
 		
 	}
 	
+	public static void logOut(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException {
+		
+		if(!req.getMethod().equals("GET"))
+			return;
+			
+		ObjectMapper mapper = new ObjectMapper();
+
+		try {
+			ObjectNode info = mapper.createObjectNode();
+			info.put("message", "Successful logout");
+			req.getSession().invalidate();
+			res.setStatus(200);
+			res.getWriter().write(new ObjectMapper().writeValueAsString(info));
+		} catch(Exception e) {
+			ObjectNode errorInfo = mapper.createObjectNode();
+			res.setStatus(403);
+			errorInfo.put("code", 403);
+			errorInfo.put("message", e.getMessage());
+			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+		}
+		
+	}
+	
 }

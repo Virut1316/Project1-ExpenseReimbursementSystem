@@ -238,5 +238,41 @@ public class ReimbursementController {
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
 	}
+
+	public static void getReimbursement(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException{
+		
+		StringBuilder buffer = new StringBuilder();
+		BufferedReader reader = req.getReader();
+		
+		String line;
+		while((line = reader.readLine()) != null) {
+			buffer.append(line);
+			buffer.append(System.lineSeparator());
+		}
+		
+		String data = buffer.toString();
+		System.out.println(data);
+		
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode parsedObj = mapper.readTree(data);
+		
+		int reimbursementId = Integer.parseInt(parsedObj.get("reimbursementId").asText());
+
+		
+		try {
+			
+			Reimbursement reimbursement = rServ.getReimbursement(reimbursementId);
+			res.setStatus(200);
+			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursement));
+			
+		}catch (Exception e) {
+			ObjectNode errorInfo = mapper.createObjectNode();
+			res.setStatus(403);
+			//errorInfo.put("code", 403);
+			errorInfo.put("message", e.getMessage());
+			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+		}
+		
+	}
 	
 }

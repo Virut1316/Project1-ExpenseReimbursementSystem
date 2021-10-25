@@ -115,6 +115,19 @@ public class ReimbursementServices {
 		
 		return reimbursements;
 	}
+
+
+	public Reimbursement getReimbursement(int rId) {
+		
+		Reimbursement reimbursementResponse = rDao.getElement(rId);
+		
+		if(reimbursementResponse == null)
+			throw new DatabaseConnectionFailedException();
+		else if(reimbursementResponse.getAuthor() == null) 
+			throw new NotReimbursementsException();
+		
+		return reimbursementResponse;
+	}
 	
 	
 }
