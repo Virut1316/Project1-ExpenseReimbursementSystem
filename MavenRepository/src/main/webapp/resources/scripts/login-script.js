@@ -34,8 +34,32 @@ async function login (e){
         console.log(res.message);
         alert(res.message);
     }
-    else
-       location.href = '../html/home.html';
+    else{
+	let usernameCheck = {
+		username
+	}
+	
+	let req = await fetch('http://localhost:8080/project1-ERS/api/user/get-username',{
+        method: 'POST',
+        headers: {
+            'Content-Type':'application/json'
+        },
+        body: JSON.stringify(usernameCheck)
+
+
+    });
+    	
+    	res = await req.json();
+		if(res.userRole.id==1)
+			location.href = '../html/employee-home-page.html';	
+		else
+			location.href = '../html/manager-home-page.html';	
+
+	
+	
+	
+}
+       
 
 
 }
