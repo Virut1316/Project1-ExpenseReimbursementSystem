@@ -31,6 +31,7 @@ public class UserDao implements Dao<User>{
 			while(rs.next()) {
 				user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), getRole(rs.getInt(7)));
 			}
+			connection.close();
 			
 		}
 		catch(Exception e) {
@@ -58,7 +59,7 @@ public class UserDao implements Dao<User>{
 				user.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),rs.getString(6), getRole(rs.getInt(7))));
 			}
 			
-			
+			connection.close();
 		}
 		catch(Exception e) {
 			user = null;
@@ -87,6 +88,7 @@ public class UserDao implements Dao<User>{
 			
 			preparedStatement.executeUpdate();
 						
+			connection.close();
 		}
 		catch(Exception e) {
 			element = null;
@@ -114,6 +116,7 @@ public class UserDao implements Dao<User>{
 			
 			preparedStatement.executeUpdate();
 						
+			connection.close();
 		}
 		catch(Exception e) {
 			element = null;
@@ -134,7 +137,8 @@ public class UserDao implements Dao<User>{
 			
 			
 			preparedStatement.executeUpdate();
-						
+					
+			connection.close();
 		}
 		catch(Exception e) {
 			success = false;
@@ -158,6 +162,8 @@ public class UserDao implements Dao<User>{
 			while(rs.next()) {
 				userRole = new UserRole(rs.getInt(1),rs.getString(2));
 			}
+			
+			connection.close();
 		}
 		catch(Exception e) {
 			userRole = null;
@@ -182,6 +188,7 @@ public class UserDao implements Dao<User>{
 				user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), getRole(rs.getInt(7)));
 			}
 			
+			connection.close();
 		}
 		catch(Exception e) {
 			user = null;
@@ -206,7 +213,7 @@ public class UserDao implements Dao<User>{
 				user.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),rs.getString(6), getRole(rs.getInt(7))));
 			}
 			
-			
+			connection.close();
 		}
 		catch(Exception e) {
 			user = null;
@@ -232,6 +239,7 @@ public class UserDao implements Dao<User>{
 				user = new User(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getString(6), getRole(rs.getInt(7)));
 			}
 			
+			connection.close();
 		}
 		catch(Exception e) {
 			user = null;

@@ -1,7 +1,6 @@
 document.getElementById('pendingbtn').addEventListener('click',fillPending);
 document.getElementById('resolvedbtn').addEventListener('click',fillResolved);
-document.getElementById('logoutbtn').addEventListener('click', logout);
-document.getElementById('accountbtn').addEventListener('click', ()=>{location.href = '../html/employee-info-update.html';});
+
 
 var TableHeadPending = `<tr>
                     <th>
@@ -130,30 +129,13 @@ async function fillResolved(){
 
 }
 
-async function logout(){
-
-        let sreq = await fetch('http://localhost:8080/project1-ERS/api/log-out');
-        let sres = await sreq.json();
-
-        if(sreq.status==200)
-            {
-
-                location.href = '../html/login-page.html';	
-
-            }
-        else{
-                alert("Something went wrong");
-                location.href = '../html/login-page.html';	
-
-            }
-
-}
-
 
 
 function fillPendingTable(reimb){
     document.getElementById('table-head').innerHTML = TableHeadPending;
     let table = document.getElementById('table-body');
+    try{
+    
     table.innerHTML = '';
     for(element of reimb){
 		let post = document.createElement('tr');
@@ -164,11 +146,18 @@ function fillPendingTable(reimb){
                             <td>${element.type.type}</td>`;
 		table.append(post);
     }
+    }
+    catch(e){
+        let post = document.createElement('tr');
+        post.innerHTML = `<th >No elements to display</th>`
+
+    }
 }
 
 function fillResolvedTable(reimb){
     document.getElementById('table-head').innerHTML = TableHeadResolved;
     let table = document.getElementById('table-body');
+    try{
     table.innerHTML = '';
     for(element of reimb){
 		let post = document.createElement('tr');
@@ -181,6 +170,12 @@ function fillResolvedTable(reimb){
                             <td>${element.type.type}</td>
                             <td ` +(element.status.status=='Rejected'?'style="color:red;"':'style="color:green;"') + `>${element.status.status}</td>`;
 		table.append(post);
+    }
+    
+    }
+    catch(e){
+        let post = document.createElement('tr');
+        post.innerHTML = `<th >No elements to display</th>`
     }
 }
 

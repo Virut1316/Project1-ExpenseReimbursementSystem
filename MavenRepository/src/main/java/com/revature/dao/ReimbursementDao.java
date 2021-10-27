@@ -44,8 +44,11 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 												 userDao.getElement(rs.getInt(7)), resolver, getStatus(rs.getInt(9)), getType(rs.getInt(10)));
 				
 			}
+			
+			connection.close();
 		}
 		catch(Exception e) {
+			
 			reimbursement = null;
 			
 		}
@@ -79,6 +82,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 												 rs.getString(4), rs.getString(5), rs.getString(6), 
 												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
 			}
+			connection.close();
 		}
 		catch(Exception e) {
 			reimbursements = null;
@@ -114,6 +118,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			if(state == 0)
 				element = new Reimbursement();
 			
+			connection.close();
 		}
 		catch(Exception e) {
 			element = null;
@@ -147,7 +152,8 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			
 			
 			preparedStatement.executeUpdate();
-						
+					
+			connection.close();
 		}
 		catch(Exception e) {
 			element = null;
@@ -170,7 +176,8 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			
 			
 			preparedStatement.executeUpdate();
-						
+				
+			connection.close();
 		}
 		catch(Exception e) {
 			success = false;
@@ -196,6 +203,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 				reimbursementStatus = new ReimbursementStatus(rs.getInt(1),rs.getString(2));
 			}
 			
+			connection.close();
 		}catch (Exception e) {
 			reimbursementStatus = null;
 			
@@ -219,11 +227,12 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 				reimbursementType = new ReimbursementType(rs.getInt(1),rs.getString(2));
 			}
 
-			
+			connection.close();
 		}catch (Exception e) {
 			reimbursementType = null;
 			
 		}
+		
 		
 		return reimbursementType;
 	}
@@ -252,6 +261,8 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 												 rs.getString(4), rs.getString(5), rs.getString(6), 
 												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
 			}
+			
+			connection.close();
 		}
 		catch(Exception e) {
 			reimbursements = null;
@@ -284,6 +295,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 												 rs.getString(4), rs.getString(5), rs.getString(6), 
 												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
 			}
+			connection.close();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -317,6 +329,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 												 rs.getString(4), rs.getString(5), rs.getString(6), 
 												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
 			}
+			connection.close();
 		}
 		catch(Exception e) {
 			reimbursements = null;
@@ -348,6 +361,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 												 rs.getString(4), rs.getString(5), rs.getString(6), 
 												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
 			}
+			connection.close();
 		}
 		catch(Exception e) {
 			reimbursements = null;
@@ -379,6 +393,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 												 rs.getString(4), rs.getString(5), rs.getString(6), 
 												 userDao.getElement(rs.getInt(7)), author, getStatus(rs.getInt(9)), getType(rs.getInt(10))));
 			}
+			connection.close();
 		}
 		catch(Exception e) {
 			reimbursements = null;
