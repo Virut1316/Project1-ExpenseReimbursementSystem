@@ -217,6 +217,7 @@ public class UserDao implements Dao<User>{
 		}
 		catch(Exception e) {
 			user = null;
+			e.printStackTrace();
 		}
 		
 		return user;

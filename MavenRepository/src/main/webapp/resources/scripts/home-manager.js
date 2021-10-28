@@ -1,5 +1,6 @@
 document.getElementById('pendingbtn').addEventListener('click',fillPending);
 document.getElementById('resolvedbtn').addEventListener('click',fillResolved);
+document.getElementById('employeesbtn').addEventListener('click',fillEmployee);
 
 
 var TableHeadPending = `<tr>
@@ -13,10 +14,16 @@ var TableHeadPending = `<tr>
                     Submitted
                     </th>
                     <th>
+                    Author
+                    </th>
+                    <th>
                     Description
                     </th>
                     <th>
                     Type
+                    </th>
+                    <th>
+                    
                     </th>
                     </tr>`;
 
@@ -34,6 +41,9 @@ var TableHeadResolved = `<tr>
                     Resolved
                     </th>
                     <th>
+                    Author
+                    </th>
+                    <th>
                     Resolver
                     </th>
                     <th>
@@ -47,6 +57,26 @@ var TableHeadResolved = `<tr>
                     </th>
                     </tr>`;
 
+var TableHeadEmployee = `<tr>
+                    <th>
+                    #
+                    </th>
+                    <th>
+                    Username
+                    </th>
+                    <th>
+                    First name
+                    </th>
+                    <th>
+                    Last name
+                    </th>
+                    <th>
+                    Email
+                    </th>
+                    <th>
+                    
+                    </th>
+                    </tr>`;
 
 try{
     fillPending();
@@ -59,36 +89,49 @@ async function fillPending(){
 
     let pendingbtn = document.getElementById('pendingbtn');
     let resolvedbtn = document.getElementById('resolvedbtn');
-
-        let sreq = await fetch('http://localhost:8080/project1-ERS/api/session');
-        let sres = await sreq.json();
+    let employeesbtn = document.getElementById('employeesbtn');
 
 
-        let authorId = sres.userId;
 
-        let parameters = {
-            authorId
-        }
-
-
-        let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/pending-requests',{
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify(parameters)
-
-
-        });
+        let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/all-pending');
 
         res = await req.json();
 
         fillPendingTable(res);
 
+        employeesbtn.style.backgroundColor ='#EEEEEE'
+        employeesbtn.style.color ='#003055';
         resolvedbtn.style.backgroundColor ='#EEEEEE'
         resolvedbtn.style.color ='#003055';
         pendingbtn.style.backgroundColor ='#003055'
         pendingbtn.style.color ='#EEEEEE';
+        
+
+}
+
+async function fillEmployee(){
+
+    let pendingbtn = document.getElementById('pendingbtn');
+    let resolvedbtn = document.getElementById('resolvedbtn');
+    let employeesbtn = document.getElementById('employeesbtn');
+
+
+
+        let req = await fetch('http://localhost:8080/project1-ERS/api/user/all-employees');
+
+        res = await req.json();
+
+        fillEmployeeTable(res);
+
+        pendingbtn.style.backgroundColor ='#EEEEEE'
+        pendingbtn.style.color ='#003055';
+        employeesbtn.style.backgroundColor ='#003055'
+        employeesbtn.style.color ='#EEEEEE';
+        resolvedbtn.style.backgroundColor ='#EEEEEE'
+        resolvedbtn.style.color ='#003055';
+
+
+        
 
 }
 
@@ -96,36 +139,21 @@ async function fillResolved(){
 
     let pendingbtn = document.getElementById('pendingbtn');
     let resolvedbtn = document.getElementById('resolvedbtn');
-
-        let sreq = await fetch('http://localhost:8080/project1-ERS/api/session');
-        let sres = await sreq.json();
+    let employeesbtn = document.getElementById('employeesbtn');
 
 
-        let authorId = sres.userId;
-
-        let parameters = {
-            authorId
-        }
-
-
-        let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/resolved-requests',{
-            method: 'POST',
-            headers: {
-                'Content-Type':'application/json'
-            },
-            body: JSON.stringify(parameters)
-
-
-        });
+        let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/all-resolved');
 
         res = await req.json();
 
         fillResolvedTable(res);
 
-    pendingbtn.style.backgroundColor ='#EEEEEE'
-    pendingbtn.style.color ='#003055';
-    resolvedbtn.style.backgroundColor ='#003055'
-    resolvedbtn.style.color ='#EEEEEE';
+        pendingbtn.style.backgroundColor ='#EEEEEE'
+        pendingbtn.style.color ='#003055';
+        employeesbtn.style.backgroundColor ='#EEEEEE'
+        employeesbtn.style.color ='#003055';
+        resolvedbtn.style.backgroundColor ='#003055'
+        resolvedbtn.style.color ='#EEEEEE';
 
 }
 
@@ -144,8 +172,12 @@ function fillPendingTable(reimb){
 		rowElement.innerHTML = `  <th >${element.id}</th>
                             <td>${dollar}.${cents}$</td>
                             <td>${element.submitted}</td>
+                            <td>${element.author.username}</td>
                             <td>${element.description.substring(0,30)}` + (element.description.length>30?'...':'')+ `</td>
-                            <td>${element.type.type}</td>`;
+                            <td>${element.type.type}</td>
+                            <td><button onclick="" type="button" class="btn" style="background-color: #F25757; color:white; align-self: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                          </svg></button></td>`;
 		table.append(rowElement);
     }
     }
@@ -172,6 +204,7 @@ function fillResolvedTable(reimb){
                             <td>${dollar}.${cents}$</td>
                             <td>${element.submitted}</td>
                             <td>${element.resolved}</td>
+                            <td>${element.author.username}</td>
                             <td>${element.resolver.username}</td>
                             <td>${element.description.substring(0,30)}` + (element.description.length>30?'...':'')+ `</td>
                             <td>${element.type.type}</td>
@@ -187,3 +220,29 @@ function fillResolvedTable(reimb){
     }
 }
 
+function fillEmployeeTable(reimb){
+    document.getElementById('table-head').innerHTML = TableHeadEmployee;
+    let table = document.getElementById('table-body');
+    try{
+    table.innerHTML = '';
+    for(element of reimb){
+		let rowElement = document.createElement('tr');
+		rowElement.innerHTML = `  <th >${element.id}</th>
+                            <td>${element.username}</td>
+                            <td>${element.firstName}</td>
+                            <td>${element.lastName}</td>
+                            <td>${element.email}</td>
+                            <td><button onclick="" type="button" class="btn" style="background-color: #F25757; color:white; align-self: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                          </svg></button></td>`
+        
+                            table.append(rowElement);
+    }
+    
+    }
+    catch(e){
+	    console.log(e);
+        let rowElement = document.createElement('tr');
+        rowElement.innerHTML = `<th >No elements to display</th>`
+    }
+}

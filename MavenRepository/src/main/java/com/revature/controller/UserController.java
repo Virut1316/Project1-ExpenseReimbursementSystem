@@ -36,7 +36,7 @@ public class UserController {
 			ArrayList<User> users = userServices.getAllEmployees();
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(users));
-			
+			//System.out.print(new ObjectMapper().writeValueAsString(users));
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
