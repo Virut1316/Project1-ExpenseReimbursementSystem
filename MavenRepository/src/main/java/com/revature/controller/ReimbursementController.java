@@ -2,7 +2,10 @@ package com.revature.controller;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,13 +48,17 @@ public class ReimbursementController {
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode parsedObj = mapper.readTree(data);
 		
+		//Catching current local/servlet date and time https://stackabuse.com/how-to-get-current-date-and-time-in-java/
+		SimpleDateFormat format= new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+		Date date = new Date(System.currentTimeMillis());
+		
 		int amount = Integer.parseInt(parsedObj.get("amount").asText());
-		String submittedTime = parsedObj.get("submitted").asText();
+		String submittedTime = format.format(date); // parsedObj.get("submitted").asText(); used to get date as a parameter from html
 		String resolvedTime = null;
 		String description = parsedObj.get("description").asText();
 		String receipt = null;
 		//String receipt = parsedObj.get("description").asText(); // change to implement optional
-		int authorId = Integer.parseInt(parsedObj.get("authorId").asText());
+		int authorId = Integer.parseInt(parsedObj.get("userId").asText());
 		User authorUser = new User();
 		authorUser.setId(authorId);
 		User resolverUser = new User();
@@ -62,6 +69,8 @@ public class ReimbursementController {
 		ReimbursementType type = new ReimbursementType();
 		type.setId(typeId);
 		
+		
+		
 		try {
 			
 			Reimbursement u =rServ.createNewReimbursmentRequest(new Reimbursement(0, amount, submittedTime, resolvedTime, description, receipt, authorUser, resolverUser, status, type));
@@ -71,7 +80,7 @@ public class ReimbursementController {
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
-			//errorInfo.put("code", 403);
+			errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
@@ -133,8 +142,7 @@ public class ReimbursementController {
 		JsonNode parsedObj = mapper.readTree(data);
 		
 		int authorId = Integer.parseInt(parsedObj.get("authorId").asText());
-		
-		
+
 		try {
 			
 			ArrayList<Reimbursement> reimbursements =(ArrayList<Reimbursement>) rServ.getResolvedReimbursement(authorId);

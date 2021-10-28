@@ -138,9 +138,11 @@ function fillPendingTable(reimb){
     
     table.innerHTML = '';
     for(element of reimb){
+        dollar = element.amount.toString().substring(0,element.amount.toString().length-2);
+		cents = element.amount.toString().substring(element.amount.toString().length-2,element.amount.toString().length);
 		let post = document.createElement('tr');
 		post.innerHTML = `  <th >${element.id}</th>
-                            <td>${element.amount}</td>
+                            <td>${dollar}.${cents}$</td>
                             <td>${element.submitted}</td>
                             <td>${element.description}</td>
                             <td>${element.type.type}</td>`;
@@ -158,11 +160,16 @@ function fillResolvedTable(reimb){
     document.getElementById('table-head').innerHTML = TableHeadResolved;
     let table = document.getElementById('table-body');
     try{
+	let dollar=0;
+	let cents=0;
     table.innerHTML = '';
     for(element of reimb){
+		//${element.amount.substring(0,element.amount.length-2)}.${element.amount.substring(element.amount.length-2,element.amount.length)}$
+		dollar = element.amount.toString().substring(0,element.amount.toString().length-2);
+		cents = element.amount.toString().substring(element.amount.toString().length-2,element.amount.toString().length);
 		let post = document.createElement('tr');
 		post.innerHTML = `  <th >${element.id}</th>
-                            <td>${element.amount}</td>
+                            <td>${dollar}.${cents}$</td>
                             <td>${element.submitted}</td>
                             <td>${element.resolved}</td>
                             <td>${element.resolver.username}</td>
@@ -174,6 +181,7 @@ function fillResolvedTable(reimb){
     
     }
     catch(e){
+	    console.log(e);
         let post = document.createElement('tr');
         post.innerHTML = `<th >No elements to display</th>`
     }
