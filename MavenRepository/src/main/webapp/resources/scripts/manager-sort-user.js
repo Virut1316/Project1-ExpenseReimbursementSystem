@@ -1,9 +1,10 @@
 document.getElementById('pendingbtn').addEventListener('click',fillPending);
 document.getElementById('resolvedbtn').addEventListener('click',fillResolved);
-document.getElementById('employeesbtn').addEventListener('click',fillEmployee);
+
 var pending;
 var resolved;
-var employee;
+var username ;
+
 
 var TableHeadPending = `<tr>
                     <th>
@@ -14,9 +15,6 @@ var TableHeadPending = `<tr>
                     </th>
                     <th>
                     Submitted
-                    </th>
-                    <th>
-                    Author
                     </th>
                     <th>
                     Description
@@ -43,9 +41,6 @@ var TableHeadResolved = `<tr>
                     Resolved
                     </th>
                     <th>
-                    Author
-                    </th>
-                    <th>
                     Resolver
                     </th>
                     <th>
@@ -59,28 +54,10 @@ var TableHeadResolved = `<tr>
                     </th>
                     </tr>`;
 
-var TableHeadEmployee = `<tr>
-                    <th>
-                    #
-                    </th>
-                    <th>
-                    Username
-                    </th>
-                    <th>
-                    First name
-                    </th>
-                    <th>
-                    Last name
-                    </th>
-                    <th>
-                    Email
-                    </th>
-                    <th>
-                    
-                    </th>
-                    </tr>`;
 
 try{
+    actualUsername = localStorage.getItem('username');
+    console.log(actualUsername);
     fillPending();
 }catch(e){
     console.log('Something went wrong');
@@ -88,57 +65,101 @@ try{
 
 
 async function fillPending(){
+	
+		if(pending){
+			fillPendingTable(pending);
+			return;	
+		}
 
-    if(pending){
-        fillPendingTable(pending);
-        return;	
-    }
+        let username = {
+            'username' : actualUsername
+        }
+		
+        let sreq = await fetch('http://localhost:8080/project1-ERS/api/user/get-username',{
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(username)
 
-        let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/all-pending');
+
+        });
+        let sres = await sreq.json();
+        console.log(sres);
+        let authorId = sres.id;
+
+        let parameters = {
+            authorId
+        }
+
+
+        let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/pending-requests',{
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(parameters)
+
+
+        });
+
         res = await req.json();
-        pending = res;
 
-        fillPendingTable(pending);
-        //console.log(document.getElementById('4'));
-
-}
-
-async function fillEmployee(){
-
-    if(employee){
-        fillEmployeeTable(employee);
-        return;	
-    }
-
-        let req = await fetch('http://localhost:8080/project1-ERS/api/user/all-employees');
-
-        res = await req.json();
-        employee = res;
-        fillEmployeeTable(res);       
+		pending = res;
+        fillPendingTable(res);
 
 }
 
 async function fillResolved(){
+	
+		if(resolved){
+			fillResolvedTable(resolved);
+			return;	
+		}
+		
+        let username = {
+            'username' : actualUsername
+        }
+		
+        let sreq = await fetch('http://localhost:8080/project1-ERS/api/user/get-username',{
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(username)
 
-    if(resolved){
-        fillResolvedTable(resolved);
-        return;	
-    }
 
-        let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/all-resolved');
+        });
+        let sres = await sreq.json();
+        console.log(sres);
+        let authorId = sres.id;
+
+        let parameters = {
+            authorId
+        }
+
+
+        let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/resolved-requests',{
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json'
+            },
+            body: JSON.stringify(parameters)
+
+
+        });
 
         res = await req.json();
-        resolved = res;
+		resolved = res;
         fillResolvedTable(res);
+
 }
 
 
 
 function fillPendingTable(reimb){
-    let pendingbtn = document.getElementById('pendingbtn');
-    let resolvedbtn = document.getElementById('resolvedbtn');
-    let employeesbtn = document.getElementById('employeesbtn');
-
+	let pendingbtn = document.getElementById('pendingbtn');
+	let resolvedbtn = document.getElementById('resolvedbtn');
     document.getElementById('table-head').innerHTML = TableHeadPending;
     let table = document.getElementById('table-body');
     try{
@@ -151,35 +172,32 @@ function fillPendingTable(reimb){
 		rowElement.innerHTML = `  <th >${element.id}</th>
                             <td>${dollar}.${cents}$</td>
                             <td>${element.submitted}</td>
-                            <td>${element.author.username}</td>
                             <td>${element.description.substring(0,30)}` + (element.description.length>30?'...':'')+ `</td>
                             <td>${element.type.type}</td>
                             <td><button id="${element.id}" type="button" class="btn " style="background-color: #F25757; color:white; align-self: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                           </svg></button></td>`;
+                            ;
 		table.append(rowElement);
         document.getElementById(element.id).addEventListener('click',sendReimb);
     }
     }
     catch(e){
-        console.log(e);
         let rowElement = document.createElement('tr');
         rowElement.innerHTML = `<th >No elements to display</th>`
 
     }
-    employeesbtn.style.backgroundColor ='#EEEEEE'
-    employeesbtn.style.color ='#003055';
-    resolvedbtn.style.backgroundColor ='#EEEEEE'
-    resolvedbtn.style.color ='#003055';
-    pendingbtn.style.backgroundColor ='#003055'
-    pendingbtn.style.color ='#EEEEEE';
-    console.log(document.getElementById('4'));
+        resolvedbtn.style.backgroundColor ='#EEEEEE'
+        resolvedbtn.style.color ='#003055';
+        pendingbtn.style.backgroundColor ='#003055'
+        pendingbtn.style.color ='#EEEEEE';
 }
 
 function fillResolvedTable(reimb){
+	
     let pendingbtn = document.getElementById('pendingbtn');
     let resolvedbtn = document.getElementById('resolvedbtn');
-    let employeesbtn = document.getElementById('employeesbtn');
+	
     document.getElementById('table-head').innerHTML = TableHeadResolved;
     let table = document.getElementById('table-body');
     try{
@@ -195,13 +213,11 @@ function fillResolvedTable(reimb){
                             <td>${dollar}.${cents}$</td>
                             <td>${element.submitted}</td>
                             <td>${element.resolved}</td>
-                            <td>${element.author.username}</td>
                             <td>${element.resolver.username}</td>
                             <td>${element.description.substring(0,30)}` + (element.description.length>30?'...':'')+ `</td>
                             <td>${element.type.type}</td>
                             <td ` +(element.status.status=='Rejected'?'style="color:red;"':'style="color:green;"') + `>${element.status.status}</td>`;
 		table.append(rowElement);
-        
     }
     
     }
@@ -212,47 +228,8 @@ function fillResolvedTable(reimb){
     }
     pendingbtn.style.backgroundColor ='#EEEEEE'
     pendingbtn.style.color ='#003055';
-    employeesbtn.style.backgroundColor ='#EEEEEE'
-    employeesbtn.style.color ='#003055';
     resolvedbtn.style.backgroundColor ='#003055'
     resolvedbtn.style.color ='#EEEEEE';
-}
-
-function fillEmployeeTable(reimb){
-    let pendingbtn = document.getElementById('pendingbtn');
-    let resolvedbtn = document.getElementById('resolvedbtn');
-    let employeesbtn = document.getElementById('employeesbtn');
-    document.getElementById('table-head').innerHTML = TableHeadEmployee;
-    let table = document.getElementById('table-body');
-    try{
-    table.innerHTML = '';
-    for(element of reimb){
-		let rowElement = document.createElement('tr');
-		rowElement.innerHTML = `  <th >${element.id}</th>
-                            <td>${element.username}</td>
-                            <td>${element.firstName}</td>
-                            <td>${element.lastName}</td>
-                            <td>${element.email}</td>
-                            <td><button id=${element.username} type="button" class="btn" style="background-color: #F25757; color:white; align-self: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                            </svg></button></td>`
-        
-                            table.append(rowElement);
-                            document.getElementById(element.username).addEventListener('click',sendUser);
-    }
-    
-    }
-    catch(e){
-	    console.log(e);
-        let rowElement = document.createElement('tr');
-        rowElement.innerHTML = `<th >No elements to display</th>`
-    }
-    pendingbtn.style.backgroundColor ='#EEEEEE'
-    pendingbtn.style.color ='#003055';
-    employeesbtn.style.backgroundColor ='#003055'
-    employeesbtn.style.color ='#EEEEEE';
-    resolvedbtn.style.backgroundColor ='#EEEEEE'
-    resolvedbtn.style.color ='#003055';
 }
 
 function sendReimb(e){
@@ -271,20 +248,3 @@ function sendReimb(e){
     location.href = '../html/manager-approve-deny.html';	
         
 }
-
-function sendUser(e){
-
-    try{localStorage.removeItem('username');}catch(e){} 
-	
-    if(e.target.id)
-        localStorage.setItem('username', e.target.id);
-        
-    else if (e.target.parentElement.id)
-        localStorage.setItem('username', e.target.parentElement.id);
-    else
-        localStorage.setItem('username', e.target.parentElement.parentElement.id);
-
-    location.href = '../html/manager-sort-user.html';	
-        
-}
-
