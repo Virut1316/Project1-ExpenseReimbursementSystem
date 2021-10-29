@@ -1,6 +1,9 @@
 document.getElementById('pendingbtn').addEventListener('click',fillPending);
 document.getElementById('resolvedbtn').addEventListener('click',fillResolved);
 
+var pending;
+var resolved;
+
 
 var TableHeadPending = `<tr>
                     <th>
@@ -56,14 +59,14 @@ try{
 
 
 async function fillPending(){
-
-    let pendingbtn = document.getElementById('pendingbtn');
-    let resolvedbtn = document.getElementById('resolvedbtn');
-
+	
+		if(pending){
+			fillPendingTable(pending);
+			return;	
+		}
+		
         let sreq = await fetch('http://localhost:8080/project1-ERS/api/session');
         let sres = await sreq.json();
-
-
         let authorId = sres.userId;
 
         let parameters = {
@@ -83,20 +86,18 @@ async function fillPending(){
 
         res = await req.json();
 
+		pending = res;
         fillPendingTable(res);
-
-        resolvedbtn.style.backgroundColor ='#EEEEEE'
-        resolvedbtn.style.color ='#003055';
-        pendingbtn.style.backgroundColor ='#003055'
-        pendingbtn.style.color ='#EEEEEE';
 
 }
 
 async function fillResolved(){
-
-    let pendingbtn = document.getElementById('pendingbtn');
-    let resolvedbtn = document.getElementById('resolvedbtn');
-
+	
+		if(resolved){
+			fillResolvedTable(resolved);
+			return;	
+		}
+		
         let sreq = await fetch('http://localhost:8080/project1-ERS/api/session');
         let sres = await sreq.json();
 
@@ -119,19 +120,16 @@ async function fillResolved(){
         });
 
         res = await req.json();
-
+		resolved = res;
         fillResolvedTable(res);
-
-    pendingbtn.style.backgroundColor ='#EEEEEE'
-    pendingbtn.style.color ='#003055';
-    resolvedbtn.style.backgroundColor ='#003055'
-    resolvedbtn.style.color ='#EEEEEE';
 
 }
 
 
 
 function fillPendingTable(reimb){
+	let pendingbtn = document.getElementById('pendingbtn');
+	let resolvedbtn = document.getElementById('resolvedbtn');
     document.getElementById('table-head').innerHTML = TableHeadPending;
     let table = document.getElementById('table-body');
     try{
@@ -154,9 +152,17 @@ function fillPendingTable(reimb){
         rowElement.innerHTML = `<th >No elements to display</th>`
 
     }
+        resolvedbtn.style.backgroundColor ='#EEEEEE'
+        resolvedbtn.style.color ='#003055';
+        pendingbtn.style.backgroundColor ='#003055'
+        pendingbtn.style.color ='#EEEEEE';
 }
 
 function fillResolvedTable(reimb){
+	
+    let pendingbtn = document.getElementById('pendingbtn');
+    let resolvedbtn = document.getElementById('resolvedbtn');
+	
     document.getElementById('table-head').innerHTML = TableHeadResolved;
     let table = document.getElementById('table-body');
     try{
@@ -185,5 +191,9 @@ function fillResolvedTable(reimb){
         let rowElement = document.createElement('tr');
         rowElement.innerHTML = `<th >No elements to display</th>`
     }
+    pendingbtn.style.backgroundColor ='#EEEEEE'
+    pendingbtn.style.color ='#003055';
+    resolvedbtn.style.backgroundColor ='#003055'
+    resolvedbtn.style.color ='#EEEEEE';
 }
 

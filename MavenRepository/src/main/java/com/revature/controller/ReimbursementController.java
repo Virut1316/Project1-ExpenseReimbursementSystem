@@ -178,7 +178,11 @@ public class ReimbursementController {
 		JsonNode parsedObj = mapper.readTree(data);
 		
 		int reimbursementId = Integer.parseInt(parsedObj.get("reimbursementId").asText());
-		String resolvedTime = parsedObj.get("resolved").asText();
+		//Catching current local/servlet date and time https://stackabuse.com/how-to-get-current-date-and-time-in-java/
+		SimpleDateFormat format= new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
+		Date date = new Date(System.currentTimeMillis());
+		
+		String resolvedTime = format.format(date) ;
 		int authorId = Integer.parseInt(parsedObj.get("resolverId").asText());
 		User resolverUser = new User();
 		resolverUser.setId(authorId);
@@ -195,7 +199,7 @@ public class ReimbursementController {
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
-			//errorInfo.put("code", 403);
+			errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}

@@ -1,7 +1,9 @@
 document.getElementById('pendingbtn').addEventListener('click',fillPending);
 document.getElementById('resolvedbtn').addEventListener('click',fillResolved);
 document.getElementById('employeesbtn').addEventListener('click',fillEmployee);
-
+var pending;
+var resolved;
+var employee;
 
 var TableHeadPending = `<tr>
                     <th>
@@ -87,79 +89,56 @@ try{
 
 async function fillPending(){
 
-    let pendingbtn = document.getElementById('pendingbtn');
-    let resolvedbtn = document.getElementById('resolvedbtn');
-    let employeesbtn = document.getElementById('employeesbtn');
-
-
+    if(pending){
+        fillPendingTable(pending);
+        return;	
+    }
 
         let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/all-pending');
-
         res = await req.json();
+        pending = res;
 
-        fillPendingTable(res);
-
-        employeesbtn.style.backgroundColor ='#EEEEEE'
-        employeesbtn.style.color ='#003055';
-        resolvedbtn.style.backgroundColor ='#EEEEEE'
-        resolvedbtn.style.color ='#003055';
-        pendingbtn.style.backgroundColor ='#003055'
-        pendingbtn.style.color ='#EEEEEE';
-        
+        fillPendingTable(pending);
+        //console.log(document.getElementById('4'));
 
 }
 
 async function fillEmployee(){
 
-    let pendingbtn = document.getElementById('pendingbtn');
-    let resolvedbtn = document.getElementById('resolvedbtn');
-    let employeesbtn = document.getElementById('employeesbtn');
-
-
+    if(employee){
+        fillEmployeeTable(employee);
+        return;	
+    }
 
         let req = await fetch('http://localhost:8080/project1-ERS/api/user/all-employees');
 
         res = await req.json();
-
-        fillEmployeeTable(res);
-
-        pendingbtn.style.backgroundColor ='#EEEEEE'
-        pendingbtn.style.color ='#003055';
-        employeesbtn.style.backgroundColor ='#003055'
-        employeesbtn.style.color ='#EEEEEE';
-        resolvedbtn.style.backgroundColor ='#EEEEEE'
-        resolvedbtn.style.color ='#003055';
-
-
-        
+        employee = res;
+        fillEmployeeTable(res);       
 
 }
 
 async function fillResolved(){
 
-    let pendingbtn = document.getElementById('pendingbtn');
-    let resolvedbtn = document.getElementById('resolvedbtn');
-    let employeesbtn = document.getElementById('employeesbtn');
-
+    if(resolved){
+        fillResolvedTable(resolved);
+        return;	
+    }
 
         let req = await fetch('http://localhost:8080/project1-ERS/api/reimbursement/all-resolved');
 
         res = await req.json();
-
+        resolved = res;
         fillResolvedTable(res);
-
-        pendingbtn.style.backgroundColor ='#EEEEEE'
-        pendingbtn.style.color ='#003055';
-        employeesbtn.style.backgroundColor ='#EEEEEE'
-        employeesbtn.style.color ='#003055';
-        resolvedbtn.style.backgroundColor ='#003055'
-        resolvedbtn.style.color ='#EEEEEE';
-
 }
 
 
 
 function fillPendingTable(reimb){
+    let pendingbtn = document.getElementById('pendingbtn');
+    let resolvedbtn = document.getElementById('resolvedbtn');
+    let employeesbtn = document.getElementById('employeesbtn');
+
     document.getElementById('table-head').innerHTML = TableHeadPending;
     let table = document.getElementById('table-body');
     try{
@@ -175,20 +154,32 @@ function fillPendingTable(reimb){
                             <td>${element.author.username}</td>
                             <td>${element.description.substring(0,30)}` + (element.description.length>30?'...':'')+ `</td>
                             <td>${element.type.type}</td>
-                            <td><button onclick="" type="button" class="btn" style="background-color: #F25757; color:white; align-self: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <td><button id="${element.id}" type="button" class="btn " style="background-color: #F25757; color:white; align-self: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                           </svg></button></td>`;
 		table.append(rowElement);
+        document.getElementById(element.id).addEventListener('click',sendReimb);
     }
     }
     catch(e){
+        console.log(e);
         let rowElement = document.createElement('tr');
         rowElement.innerHTML = `<th >No elements to display</th>`
 
     }
+    employeesbtn.style.backgroundColor ='#EEEEEE'
+    employeesbtn.style.color ='#003055';
+    resolvedbtn.style.backgroundColor ='#EEEEEE'
+    resolvedbtn.style.color ='#003055';
+    pendingbtn.style.backgroundColor ='#003055'
+    pendingbtn.style.color ='#EEEEEE';
+    console.log(document.getElementById('4'));
 }
 
 function fillResolvedTable(reimb){
+    let pendingbtn = document.getElementById('pendingbtn');
+    let resolvedbtn = document.getElementById('resolvedbtn');
+    let employeesbtn = document.getElementById('employeesbtn');
     document.getElementById('table-head').innerHTML = TableHeadResolved;
     let table = document.getElementById('table-body');
     try{
@@ -218,9 +209,18 @@ function fillResolvedTable(reimb){
         let rowElement = document.createElement('tr');
         rowElement.innerHTML = `<th >No elements to display</th>`
     }
+    pendingbtn.style.backgroundColor ='#EEEEEE'
+    pendingbtn.style.color ='#003055';
+    employeesbtn.style.backgroundColor ='#EEEEEE'
+    employeesbtn.style.color ='#003055';
+    resolvedbtn.style.backgroundColor ='#003055'
+    resolvedbtn.style.color ='#EEEEEE';
 }
 
 function fillEmployeeTable(reimb){
+    let pendingbtn = document.getElementById('pendingbtn');
+    let resolvedbtn = document.getElementById('resolvedbtn');
+    let employeesbtn = document.getElementById('employeesbtn');
     document.getElementById('table-head').innerHTML = TableHeadEmployee;
     let table = document.getElementById('table-body');
     try{
@@ -232,9 +232,9 @@ function fillEmployeeTable(reimb){
                             <td>${element.firstName}</td>
                             <td>${element.lastName}</td>
                             <td>${element.email}</td>
-                            <td><button onclick="" type="button" class="btn" style="background-color: #F25757; color:white; align-self: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <td><button type="button" class="btn" style="background-color: #F25757; color:white; align-self: center;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                          </svg></button></td>`
+                            </svg></button></td>`
         
                             table.append(rowElement);
     }
@@ -245,4 +245,30 @@ function fillEmployeeTable(reimb){
         let rowElement = document.createElement('tr');
         rowElement.innerHTML = `<th >No elements to display</th>`
     }
+    pendingbtn.style.backgroundColor ='#EEEEEE'
+    pendingbtn.style.color ='#003055';
+    employeesbtn.style.backgroundColor ='#003055'
+    employeesbtn.style.color ='#EEEEEE';
+    resolvedbtn.style.backgroundColor ='#EEEEEE'
+    resolvedbtn.style.color ='#003055';
 }
+
+function sendReimb(e){
+
+    try{localStorage.removeItem('reimb');}catch(e){}
+
+    if(e.target.id){
+        alert(e.target.id);
+        localStorage.setItem('reimb', e.target.id);
+    }
+        
+    else{
+        alert(e.target.parentElement.id);
+        localStorage.setItem('reimb', e.target.parentElement.id);
+    }
+
+    location.href = '../html/manager-approve-deny.html';	
+        
+}
+
+
