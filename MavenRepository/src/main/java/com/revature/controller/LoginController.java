@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.revature.dao.Dao;
 import com.revature.dao.UserDao;
+import com.revature.logger.LoggerManager;
 import com.revature.models.User;
 import com.revature.services.UserServices;
 
@@ -32,7 +33,7 @@ public class LoginController {
 		}
 		
 		String data = buffer.toString();
-		System.out.println(data);
+		LoggerManager.logger.info(data + "got from request");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode parsedObj = mapper.readTree(data);
@@ -41,9 +42,9 @@ public class LoginController {
 		String password = parsedObj.get("password").asText();
 		
 		try {
-			System.out.println("In the post handler");
+			LoggerManager.logger.info("In the log in controller");
 			User u = userServices.login(username, password);
-			System.out.println(u);
+			LoggerManager.logger.debug(u+" sign in");
 			//We will keep track of if a user is signed in by storing their id in the session
 			req.getSession().setAttribute("id", u.getId());
 			res.setStatus(200);
@@ -53,6 +54,7 @@ public class LoginController {
 			res.setStatus(403);
 			errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
+			LoggerManager.logger.info("Problem while signing in"+e);
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
 		

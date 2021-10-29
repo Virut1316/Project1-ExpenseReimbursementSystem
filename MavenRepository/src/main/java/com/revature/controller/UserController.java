@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.revature.dao.UserDao;
+import com.revature.logger.LoggerManager;
 import com.revature.models.Reimbursement;
 import com.revature.models.User;
 import com.revature.models.UserRole;
@@ -32,17 +33,18 @@ public class UserController {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try {
-			
+			LoggerManager.logger.info("In the user controller: get all employees");
 			ArrayList<User> users = userServices.getAllEmployees();
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(users));
-			//System.out.print(new ObjectMapper().writeValueAsString(users));
+			LoggerManager.logger.debug(users+" all employees from db");
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
 			//errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+			LoggerManager.logger.info("Problem while proccessing request"+e);
 		}
 	}
 		
@@ -58,7 +60,7 @@ public class UserController {
 			}
 			
 			String data = buffer.toString();
-			System.out.println(data);
+			LoggerManager.logger.info(data + "got from request");
 			
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode parsedObj = mapper.readTree(data);
@@ -71,10 +73,11 @@ public class UserController {
 			
 						
 			try {
-				
+				LoggerManager.logger.info("In the user controller: update user info");
 				User user = userServices.updateUserInfo(new User(userId,username,null,firstName,lastName,email,null));
 				res.setStatus(200);
 				res.getWriter().write(new ObjectMapper().writeValueAsString(user));
+				LoggerManager.logger.debug(user+"  info updated from user");
 				
 			}catch (Exception e) {
 				ObjectNode errorInfo = mapper.createObjectNode();
@@ -82,6 +85,7 @@ public class UserController {
 				errorInfo.put("code", 403);
 				errorInfo.put("message", e.getMessage());
 				res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+				LoggerManager.logger.info("Problem while proccessing request"+e);
 			}
 		
 	}
@@ -98,7 +102,7 @@ public class UserController {
 			}
 			
 			String data = buffer.toString();
-			System.out.println(data);
+			LoggerManager.logger.info(data + "got from request");
 			
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode parsedObj = mapper.readTree(data);
@@ -108,10 +112,11 @@ public class UserController {
 			
 						
 			try {
-				
+				LoggerManager.logger.info("In the user controller: update password");
 				User user = userServices.updateUserPassword(new User(userId,null,newPassword,null,null,null,null));
 				res.setStatus(200);
 				res.getWriter().write(new ObjectMapper().writeValueAsString(user));
+				LoggerManager.logger.debug(user+" password updated");
 				
 			}catch (Exception e) {
 				ObjectNode errorInfo = mapper.createObjectNode();
@@ -119,6 +124,7 @@ public class UserController {
 				errorInfo.put("code", 403);
 				errorInfo.put("message", e.getMessage());
 				res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+				LoggerManager.logger.info("Problem while proccessing request"+e);
 			}
 		
 	}
@@ -137,7 +143,7 @@ public class UserController {
 			}
 			
 			String data = buffer.toString();
-			System.out.println(data);
+			LoggerManager.logger.info(data + "got from request");
 			
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode parsedObj = mapper.readTree(data);
@@ -145,10 +151,11 @@ public class UserController {
 			int userId = Integer.parseInt(parsedObj.get("userId").asText());			
 						
 			try {
-				
+				LoggerManager.logger.info("In the user controller: get user by id");
 				User user = userServices.getUser(userId);
 				res.setStatus(200);
 				res.getWriter().write(new ObjectMapper().writeValueAsString(user));
+				LoggerManager.logger.debug(user+" got with id");
 				
 			}catch (Exception e) {
 				ObjectNode errorInfo = mapper.createObjectNode();
@@ -156,6 +163,7 @@ public class UserController {
 				//errorInfo.put("code", 403);
 				errorInfo.put("message", e.getMessage());
 				res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+				LoggerManager.logger.info("Problem while proccessing request"+e);
 			}
 		
 	}
@@ -172,7 +180,7 @@ public class UserController {
 			}
 			
 			String data = buffer.toString();
-			System.out.println(data);
+			LoggerManager.logger.info(data + "got from request");
 			
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode parsedObj = mapper.readTree(data);
@@ -180,10 +188,11 @@ public class UserController {
 			String username = parsedObj.get("username").asText();			
 						
 			try {
-				
+				LoggerManager.logger.info("In the user controller: get user by username");
 				User user = userServices.getUser(username);
 				res.setStatus(200);
 				res.getWriter().write(new ObjectMapper().writeValueAsString(user));
+				LoggerManager.logger.debug(user+" got with username");
 				
 			}catch (Exception e) {
 				ObjectNode errorInfo = mapper.createObjectNode();
@@ -191,6 +200,7 @@ public class UserController {
 				//errorInfo.put("code", 403);
 				errorInfo.put("message", e.getMessage());
 				res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+				LoggerManager.logger.info("Problem while proccessing request"+e);
 			}
 		
 	}
@@ -207,7 +217,7 @@ public class UserController {
 			}
 			
 			String data = buffer.toString();
-			System.out.println(data);
+			LoggerManager.logger.info(data + "got from request");
 			
 			ObjectMapper mapper = new ObjectMapper();
 			JsonNode parsedObj = mapper.readTree(data);
@@ -215,10 +225,11 @@ public class UserController {
 			String email = parsedObj.get("email").asText();			
 						
 			try {
-				
+				LoggerManager.logger.info("In the user controller: get user by email");
 				User user = userServices.getUser(email);
 				res.setStatus(200);
 				res.getWriter().write(new ObjectMapper().writeValueAsString(user));
+				LoggerManager.logger.debug(user+" got with email");
 				
 			}catch (Exception e) {
 				ObjectNode errorInfo = mapper.createObjectNode();
@@ -226,6 +237,7 @@ public class UserController {
 				//errorInfo.put("code", 403);
 				errorInfo.put("message", e.getMessage());
 				res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+				LoggerManager.logger.info("Problem while proccessing request"+e);
 			}
 		
 	}

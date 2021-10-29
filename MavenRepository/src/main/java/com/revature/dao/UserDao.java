@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.dao.util.ConnectionConfig;
+import com.revature.logger.LoggerManager;
 import com.revature.models.User;
 import com.revature.models.UserRole;
 
@@ -26,6 +27,7 @@ public class UserDao implements Dao<User>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, id);
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -36,7 +38,7 @@ public class UserDao implements Dao<User>{
 		}
 		catch(Exception e) {
 			user = null;
-			e.printStackTrace();
+			LoggerManager.logger.debug(e);
 		}
 		
 		return user;
@@ -49,6 +51,7 @@ public class UserDao implements Dao<User>{
 		Connection connection = config.getConnection();
 		List<User> user =new ArrayList<User>();
 		String sql = "Select * from Users";
+		LoggerManager.logger.debug(sql);
 		
 		try {
 			Statement statement = connection.createStatement();
@@ -63,6 +66,7 @@ public class UserDao implements Dao<User>{
 		}
 		catch(Exception e) {
 			user = null;
+			LoggerManager.logger.debug(e);
 		}
 		
 		return user;
@@ -86,12 +90,14 @@ public class UserDao implements Dao<User>{
 			preparedStatement.setString(5, element.getEmail());
 			preparedStatement.setInt(6, element.getUserRole().getId());
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			preparedStatement.executeUpdate();
 						
 			connection.close();
 		}
 		catch(Exception e) {
 			element = null;
+			LoggerManager.logger.debug(e);
 		}
 		return element;
 	}
@@ -114,12 +120,14 @@ public class UserDao implements Dao<User>{
 			preparedStatement.setInt(6, element.getUserRole().getId());
 			preparedStatement.setInt(7, element.getId());
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			preparedStatement.executeUpdate();
 						
 			connection.close();
 		}
 		catch(Exception e) {
 			element = null;
+			LoggerManager.logger.debug(e);
 		}
 		return element;
 	}
@@ -136,12 +144,14 @@ public class UserDao implements Dao<User>{
 			preparedStatement.setInt(1, id);
 			
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			preparedStatement.executeUpdate();
 					
 			connection.close();
 		}
 		catch(Exception e) {
 			success = false;
+			LoggerManager.logger.debug(e);
 		}
 		return success;
 
@@ -157,6 +167,7 @@ public class UserDao implements Dao<User>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, id);
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -167,6 +178,7 @@ public class UserDao implements Dao<User>{
 		}
 		catch(Exception e) {
 			userRole = null;
+			LoggerManager.logger.debug(e);
 		}
 		
 		return userRole;
@@ -182,6 +194,7 @@ public class UserDao implements Dao<User>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, username);
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -192,6 +205,7 @@ public class UserDao implements Dao<User>{
 		}
 		catch(Exception e) {
 			user = null;
+			LoggerManager.logger.debug(e);
 		}
 		
 		return user;
@@ -203,7 +217,7 @@ public class UserDao implements Dao<User>{
 		Connection connection = config.getConnection();
 		List<User> user =new ArrayList<User>();
 		String sql = "Select * from Users where user_role_id=1";
-		
+		LoggerManager.logger.debug(sql);
 		try {
 			Statement statement = connection.createStatement();
 			
@@ -217,7 +231,7 @@ public class UserDao implements Dao<User>{
 		}
 		catch(Exception e) {
 			user = null;
-			e.printStackTrace();
+			LoggerManager.logger.debug(e);
 		}
 		
 		return user;
@@ -234,6 +248,7 @@ public class UserDao implements Dao<User>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setString(1, email);
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -244,6 +259,7 @@ public class UserDao implements Dao<User>{
 		}
 		catch(Exception e) {
 			user = null;
+			LoggerManager.logger.debug(e);
 		}
 		
 		return user;

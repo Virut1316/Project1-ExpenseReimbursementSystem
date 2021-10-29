@@ -11,12 +11,12 @@ import com.revature.controller.LoginController;
 import com.revature.controller.ReimbursementController;
 import com.revature.controller.SessionController;
 import com.revature.controller.UserController;
+import com.revature.logger.LoggerManager;
 
 public class Dispatcher {
 
 	public static void process(HttpServletRequest req, HttpServletResponse res) throws JsonProcessingException, IOException{
-		System.out.println("Here: "+req.getRequestURI());
-		
+		LoggerManager.logger.info("Here: "+req.getRequestURI());
 		switch (req.getRequestURI()) {
 		case "/project1-ERS/api/login": //gets an user if its on DB or an error message on exceptions
 			LoginController.login(req, res);

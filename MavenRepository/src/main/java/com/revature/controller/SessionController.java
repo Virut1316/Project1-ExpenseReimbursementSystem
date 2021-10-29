@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.revature.logger.LoggerManager;
 
 public class SessionController {
 
@@ -21,6 +22,7 @@ public class SessionController {
 		
 		
 		if(session.getAttribute("id") == null) {
+			LoggerManager.logger.info("No current session");
 			ObjectNode errorInfo = map.createObjectNode();
 			res.setStatus(404);
 			//errorInfo.put("code", 404);
@@ -29,7 +31,7 @@ public class SessionController {
 			res.getWriter().println("User is not logged in");
 			return;
 		}
-		System.out.print("there is a session");	
+		LoggerManager.logger.info("Session found "+ session.getAttribute("id").toString());
 		sessInfo.put("userId", session.getAttribute("id").toString());
 		res.getWriter().write(new ObjectMapper().writeValueAsString(sessInfo));
 		

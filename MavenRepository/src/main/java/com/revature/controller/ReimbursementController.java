@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.revature.dao.ReimbursementDao;
 import com.revature.dao.UserDao;
+import com.revature.logger.LoggerManager;
 import com.revature.models.Reimbursement;
 import com.revature.models.ReimbursementStatus;
 import com.revature.models.ReimbursementType;
@@ -43,7 +44,7 @@ public class ReimbursementController {
 		}
 		
 		String data = buffer.toString();
-		System.out.println(data);
+		LoggerManager.logger.info(data + "got from request");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode parsedObj = mapper.readTree(data);
@@ -72,16 +73,18 @@ public class ReimbursementController {
 		
 		
 		try {
-			
+			LoggerManager.logger.info("In the reimbursement controller: create new");
 			Reimbursement u =rServ.createNewReimbursmentRequest(new Reimbursement(0, amount, submittedTime, resolvedTime, description, receipt, authorUser, resolverUser, status, type));
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(u));
+			LoggerManager.logger.debug(u+" Reimbursement created");
 			
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
 			errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
+			LoggerManager.logger.info("Problem while creating request"+e);
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
 		
@@ -99,7 +102,7 @@ public class ReimbursementController {
 		}
 		
 		String data = buffer.toString();
-		System.out.println(data);
+		LoggerManager.logger.info(data + "got from request");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode parsedObj = mapper.readTree(data);
@@ -108,16 +111,18 @@ public class ReimbursementController {
 		
 		
 		try {
-			
+			LoggerManager.logger.info("In the reimbursement controller: get pending from user");
 			ArrayList<Reimbursement> reimbursements =(ArrayList<Reimbursement>) rServ.getPendingReimbursement(authorId);
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursements));
+			LoggerManager.logger.debug(reimbursements+" got from pending requests");
 			
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
 			//errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
+			LoggerManager.logger.info("Problem while retriving pending requests "+e);
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
 		
@@ -136,7 +141,7 @@ public class ReimbursementController {
 		}
 		
 		String data = buffer.toString();
-		System.out.println(data);
+		LoggerManager.logger.info(data + "got from request");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode parsedObj = mapper.readTree(data);
@@ -144,16 +149,18 @@ public class ReimbursementController {
 		int authorId = Integer.parseInt(parsedObj.get("authorId").asText());
 
 		try {
-			
+			LoggerManager.logger.info("In the reimbursement controller: get resolved from user");
 			ArrayList<Reimbursement> reimbursements =(ArrayList<Reimbursement>) rServ.getResolvedReimbursement(authorId);
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursements));
+			LoggerManager.logger.debug(reimbursements+" got from resolved requests");
 			
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
 			//errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
+			LoggerManager.logger.info("Problem while retriving pending resolved "+e);
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
 		
@@ -172,7 +179,7 @@ public class ReimbursementController {
 		}
 		
 		String data = buffer.toString();
-		System.out.println(data);
+		LoggerManager.logger.info(data + "got from request");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode parsedObj = mapper.readTree(data);
@@ -191,16 +198,18 @@ public class ReimbursementController {
 		status.setId(statusId);
 
 		try {
-			
+			LoggerManager.logger.info("In the reimbursement controller: Approve deny");
 			Reimbursement u =rServ.approveDenyReimbursement(new Reimbursement(reimbursementId, 0, null, resolvedTime, null, null, null, resolverUser, status, null));
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(u));
-			
+			LoggerManager.logger.debug(u+" as response from approveDeny");
+
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
 			errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
+			LoggerManager.logger.info("Problem while updating reimbursement "+e);
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
 		}
 	}
@@ -214,10 +223,11 @@ public class ReimbursementController {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try {
-			
+			LoggerManager.logger.info("In the reimbursement controller: Get all pending requests");
 			ArrayList<Reimbursement> reimbursement = (ArrayList<Reimbursement>) rServ.getAllPendingReimbursements();
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursement));
+			LoggerManager.logger.debug(reimbursement+" got from all pending requests");
 			
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
@@ -225,6 +235,8 @@ public class ReimbursementController {
 			//errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+			LoggerManager.logger.info("Problem while getting all reimbursements "+e);
+
 		}
 	}
 	
@@ -237,17 +249,20 @@ public class ReimbursementController {
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try {
-			
+			LoggerManager.logger.info("In the reimbursement controller: get all resolved requests");
 			ArrayList<Reimbursement> reimbursement = (ArrayList<Reimbursement>) rServ.getAllResolvedReimbursements();
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursement));
-			
+			LoggerManager.logger.debug(reimbursement+" got from all resolved requests");
+
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
 			res.setStatus(403);
 			//errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+			LoggerManager.logger.info("Problem while getting all reimbursements "+e);
+
 		}
 	}
 
@@ -263,7 +278,7 @@ public class ReimbursementController {
 		}
 		
 		String data = buffer.toString();
-		System.out.println(data);
+		LoggerManager.logger.info(data + "got from request");
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode parsedObj = mapper.readTree(data);
@@ -272,10 +287,12 @@ public class ReimbursementController {
 
 		
 		try {
-			
+			LoggerManager.logger.info("In the reimbursement controller: get reimbursement with Id");
 			Reimbursement reimbursement = rServ.getReimbursement(reimbursementId);
 			res.setStatus(200);
 			res.getWriter().write(new ObjectMapper().writeValueAsString(reimbursement));
+			LoggerManager.logger.debug(reimbursement+" reimbursement got from db");
+
 			
 		}catch (Exception e) {
 			ObjectNode errorInfo = mapper.createObjectNode();
@@ -283,6 +300,8 @@ public class ReimbursementController {
 			//errorInfo.put("code", 403);
 			errorInfo.put("message", e.getMessage());
 			res.getWriter().write((new ObjectMapper().writeValueAsString(errorInfo)));
+			LoggerManager.logger.info("Problem while getting reimbursement "+e);
+
 		}
 		
 	}

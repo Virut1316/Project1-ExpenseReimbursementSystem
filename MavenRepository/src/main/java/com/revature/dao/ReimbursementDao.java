@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.revature.dao.util.ConnectionConfig;
+import com.revature.logger.LoggerManager;
 import com.revature.models.Reimbursement;
 import com.revature.models.ReimbursementStatus;
 import com.revature.models.ReimbursementType;
@@ -30,6 +31,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, id);
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -50,7 +52,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		catch(Exception e) {
 			
 			reimbursement = null;
-			
+			LoggerManager.logger.debug(e);
 		}
 		
 		
@@ -65,7 +67,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
 		UserDao userDao = new UserDao();
 		String sql = "Select * from Reimbursement";
-		
+		LoggerManager.logger.debug(sql);
 		try {
 			Statement statement = connection.createStatement();
 			
@@ -86,6 +88,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		}
 		catch(Exception e) {
 			reimbursements = null;
+			LoggerManager.logger.debug(e);
 		}
 		
 		return reimbursements;
@@ -113,6 +116,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			preparedStatement.setInt(8, element.getStatus().getId());
 			preparedStatement.setInt(9, element.getType().getId());
 			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			int state =preparedStatement.executeUpdate();
 			
 			if(state == 0)
@@ -122,8 +126,8 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		}
 		catch(Exception e) {
 			element = null;
-			e.printStackTrace();
-		}
+			LoggerManager.logger.debug(e);
+			}
 		return element;
 		
 	}
@@ -150,15 +154,15 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			preparedStatement.setInt(9, element.getType().getId());
 			preparedStatement.setInt(10, element.getId());
 			
-			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			preparedStatement.executeUpdate();
 					
 			connection.close();
 		}
 		catch(Exception e) {
 			element = null;
-			//e.printStackTrace();
-		}
+			LoggerManager.logger.debug(e);
+			}
 		return element;
 
 	}
@@ -174,13 +178,14 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, id);
 			
-			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			preparedStatement.executeUpdate();
 				
 			connection.close();
 		}
 		catch(Exception e) {
 			success = false;
+			LoggerManager.logger.debug(e);
 		}
 		return success;
 	}
@@ -197,6 +202,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			PreparedStatement preparesStatement = connection.prepareStatement(sql);
 			preparesStatement.setInt(1, id);
 			
+			LoggerManager.logger.debug(preparesStatement.toString());
 			ResultSet rs = preparesStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -206,7 +212,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			connection.close();
 		}catch (Exception e) {
 			reimbursementStatus = null;
-			
+			LoggerManager.logger.debug(e);
 		}
 		
 		return reimbursementStatus;
@@ -221,6 +227,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			PreparedStatement preparesStatement = connection.prepareStatement(sql);
 			preparesStatement.setInt(1, id);
 			
+			LoggerManager.logger.debug(preparesStatement.toString());
 			ResultSet rs = preparesStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -230,6 +237,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			connection.close();
 		}catch (Exception e) {
 			reimbursementType = null;
+			LoggerManager.logger.debug(e);
 			
 		}
 		
@@ -247,7 +255,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, aId);
 			
-			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -266,6 +274,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		}
 		catch(Exception e) {
 			reimbursements = null;
+			LoggerManager.logger.debug(e);
 		}
 		
 		return reimbursements;
@@ -281,7 +290,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, aId);
 			
-			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -298,7 +307,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			connection.close();
 		}
 		catch(Exception e) {
-			e.printStackTrace();
+			LoggerManager.logger.debug(e);
 			reimbursements = null;
 		}
 		
@@ -315,7 +324,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			PreparedStatement preparedStatement = connection.prepareStatement(sql);
 			preparedStatement.setInt(1, aId);
 			
-			
+			LoggerManager.logger.debug(preparedStatement.toString());
 			ResultSet rs = preparedStatement.executeQuery();
 			
 			while(rs.next()) {
@@ -332,6 +341,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			connection.close();
 		}
 		catch(Exception e) {
+			LoggerManager.logger.debug(e);
 			reimbursements = null;
 		}
 		
@@ -343,7 +353,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
 		UserDao userDao = new UserDao();
 		String sql = "Select * from Reimbursement where reimb_status_id<>1";
-		
+		LoggerManager.logger.debug(sql);
 		try {
 			Statement statement = connection.createStatement();
 			
@@ -364,6 +374,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			connection.close();
 		}
 		catch(Exception e) {
+			LoggerManager.logger.debug(e);
 			reimbursements = null;
 		}
 		
@@ -375,7 +386,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 		List<Reimbursement> reimbursements =new ArrayList<Reimbursement>();
 		UserDao userDao = new UserDao();
 		String sql = "Select * from Reimbursement where reimb_status_id=1";
-		
+		LoggerManager.logger.debug(sql);
 		try {
 			Statement statement = connection.createStatement();
 			
@@ -396,6 +407,7 @@ public class ReimbursementDao implements Dao<Reimbursement>{
 			connection.close();
 		}
 		catch(Exception e) {
+			LoggerManager.logger.debug(e);
 			reimbursements = null;
 		}
 		
