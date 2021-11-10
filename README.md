@@ -7,19 +7,22 @@ The Expense Reimbursement System is a web application where employees can make r
 ## Technologies Used
 
 * Java 8
-* Apache Maven - version 3.8.2
-* Log4j - version 1.2.17
-* JUnit - version 4.13.2
-* Mockito - version 3.2.4
-* Postgresql JDBC - version 9.1
-* Jackson - version 2.9.9
+* Apache Maven - 3.8.2
+* Log4j - 1.2.17
+* JUnit - 4.13.2
+* Mockito - 3.2.4
+* Postgresql JDBC - 9.1
+* Jackson - 2.9.9
 
 ## Features
 
-List of features ready and TODOs for future development
-* Awesome feature 1
-* Awesome feature 2
-* Awesome feature 3
+###Features redy
+* User login and redirect to the corresponding homepage
+* User's page to update account information
+* Creation of reimbursement requests
+* User's reimbursements displayed in home page, filtered by status
+* Manager's home page where all reimbursements in the system are displayed by status
+* 
 
 To-do list:
 * Wow improvement to be done 1
