@@ -43,9 +43,14 @@ git clone https://github.com/Virut1316/Project1-ExpenseReimbursementSystem.git
 
 ## Usage
 
-* Login page
+* Login page:
 Input username and password to enter the system, the home page that loads depends if the user is a manager or an employee
-![image](https://user-images.githubusercontent.com/54875369/141059915-9e8b85ca-55e5-489b-9a4c-e9759eca8c51.png)
+![image](https://user-images.githubusercontent.com/54875369/141060186-9482586a-0701-4e1f-8304-09fcced54035.png)
+
+* Employee home page:
+It display all of the pending or resolved reimbursement requests that the user owns, user can change the displayed reimbursements by clicking the pending or resolved buttons
+![image](https://user-images.githubusercontent.com/54875369/141060486-09ba0ceb-aa83-4f3e-b56e-1bab12ce4847.png)
+![image](https://user-images.githubusercontent.com/54875369/141060537-d56fc723-17bd-4a64-849b-bc606df2d552.png)
 
 
 
