@@ -43,7 +43,7 @@ git clone https://github.com/Virut1316/Project1-ExpenseReimbursementSystem.git
 
 ## Usage
 
-*Login page
+* Login page
 Input username and password to enter the system, the home page that loads depends if the user is a manager or an employee
 ![image](https://user-images.githubusercontent.com/54875369/141059915-9e8b85ca-55e5-489b-9a4c-e9759eca8c51.png)
 
