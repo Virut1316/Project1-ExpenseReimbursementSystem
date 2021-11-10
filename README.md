@@ -52,6 +52,21 @@ It display all of the pending or resolved reimbursement requests that the user o
 ![image](https://user-images.githubusercontent.com/54875369/141060486-09ba0ceb-aa83-4f3e-b56e-1bab12ce4847.png)
 ![image](https://user-images.githubusercontent.com/54875369/141060537-d56fc723-17bd-4a64-849b-bc606df2d552.png)
 
+* New request page: User can fill out the form to create a new pending request
+![image](https://user-images.githubusercontent.com/54875369/141060851-51da0225-972e-4aa1-afc1-7ebe6c72904d.png)
+
+* User page: User can see and change the information of the account as well as the password
+![image](https://user-images.githubusercontent.com/54875369/141060965-96191b63-fc0a-4306-82aa-741e951bd9b1.png)
+![image](https://user-images.githubusercontent.com/54875369/141060999-098819e6-2661-416c-9a9f-504da5ece709.png)
+
+* Manager home page: Displays all of the reimbursement requests of all users, displayed by pending or resolved
+![image](https://user-images.githubusercontent.com/54875369/141061330-bb079f94-987c-4faf-934b-5bfcefe25210.png)
+![image](https://user-images.githubusercontent.com/54875369/141061368-cb77616d-498d-4160-a250-eb0cde1a99ad.png)
+
+* Manager employee list: Displays all users that are employees and allows to see the reimbursements of that specific employee
+![image](https://user-images.githubusercontent.com/54875369/141061537-ed36096b-df91-411c-b2fe-3d3b2512de37.png)
+> A page similar to employee home page is displayed when seeing reimbursements of an especific employee
+![image](https://user-images.githubusercontent.com/54875369/141061697-aae75b90-068c-45fe-9a17-bc2eda763558.png)
 
 
 ## License
