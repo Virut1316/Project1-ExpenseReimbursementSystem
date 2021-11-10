@@ -6,9 +6,13 @@ The Expense Reimbursement System is a web application where employees can make r
 
 ## Technologies Used
 
-* Tech 1 - version 1.0
-* Tech 2 - version 2.0
-* Tech 3 - version 3.0
+* Java 8
+* Apache Maven - version 3.8.2
+* Log4j - version 1.2.17
+* JUnit - version 4.13.2
+* Mockito - version 3.2.4
+* Postgresql JDBC - version 9.1
+* Jackson - version 2.9.9
 
 ## Features
 
