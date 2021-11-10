@@ -68,7 +68,10 @@ It display all of the pending or resolved reimbursement requests that the user o
 > A page similar to employee home page is displayed when seeing reimbursements of an especific employee
 ![image](https://user-images.githubusercontent.com/54875369/141061697-aae75b90-068c-45fe-9a17-bc2eda763558.png)
 
+* Manager approve and deny page: By clicking the magnifying glass on a pending reimbursement this page is loaded and allows the manager to approve or deny that specific reimbursement
+![image](https://user-images.githubusercontent.com/54875369/141062117-ac590f9c-b42d-4331-949a-abacdf4596b0.png)
+
 
 ## License
 
-This project uses the following license: [<license_name>](<link>).
+This project uses the following license: [<ACADEMIC PUBLIC LICENSE>](<https://omnetpp.org/intro/license>).
