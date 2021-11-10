@@ -74,4 +74,4 @@ It display all of the pending or resolved reimbursement requests that the user o
 
 ## License
 
-This project uses the following license: [ACADEMIC PUBLIC LICENSE](https://omnetpp.org/intro/license).
+This project uses the following license: [ACADEMIC PUBLIC LICENSE](https://placeholder).
