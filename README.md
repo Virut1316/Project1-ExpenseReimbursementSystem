@@ -16,17 +16,19 @@ The Expense Reimbursement System is a web application where employees can make r
 
 ## Features
 
-###Features redy
-* User login and redirect to the corresponding homepage
-* User's page to update account information
-* Creation of reimbursement requests
-* User's reimbursements displayed in home page, filtered by status
-* Manager's home page where all reimbursements in the system are displayed by status
-* 
+Features ready
+* User can log in and are redirected to the corresponding homepage
+* User's page displays account information and allows updating it
+* Reimbursement requests can be created by the employee
+* Employee's reimbursements are displayed in home page, filtered by status
+* Manager's home page has all reimbursements in the system, displayed by status
+* Reimbursements can be filtered by user
+* Manager can approve and Deny reimbursements
 
 To-do list:
-* Wow improvement to be done 1
-* Wow improvement to be done 2
+* Password encryption
+* Allow uploading files while creating a reimbursement request
+* Send email to the created employee with temporary credentials
 
 ## Getting Started
    
