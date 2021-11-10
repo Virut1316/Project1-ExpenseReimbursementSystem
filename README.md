@@ -33,21 +33,21 @@ To-do list:
 ## Getting Started
    
 git clone https://github.com/Virut1316/Project1-ExpenseReimbursementSystem.git
-1.Import 'Project1-ExpenseReimbursementSystem/MavenRepository/' as a Maven project
 
-> Be sure to include BOTH Windows and Unix command  
-> Be sure to mention if the commands only work on a specific platform (eg. AWS, GCP)
-
-- All the `code` required to get started
-- Images of what it should look like
+1. Import **Project1-ExpenseReimbursementSystem/MavenRepository/** as a Maven project to STS
+2. Configure src/main/resources/jdbc.properties with database connection
+3. Update Maven project
+5. Run **Project1-ExpenseReimbursementSystem/Querys/** queries on Postgresql database instance
+6. Run on Tomcat server (Current version only runs on a local server)
+![image](https://user-images.githubusercontent.com/54875369/141059565-757c1e98-9912-4717-b7ab-dcfb15f72663.png)
 
 ## Usage
 
-> Here, you instruct other people on how to use your project after they’ve installed it. This would also be a good place to include screenshots of your project in action.
+*Login page
+Input username and password to enter the system, the home page that loads depends if the user is a manager or an employee
+![image](https://user-images.githubusercontent.com/54875369/141059915-9e8b85ca-55e5-489b-9a4c-e9759eca8c51.png)
 
-## Contributors
 
-> Here list the people who have contributed to this project. (ignore this section, if its a solo project)
 
 ## License
 
