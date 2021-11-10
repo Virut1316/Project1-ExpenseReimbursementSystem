@@ -32,8 +32,8 @@ To-do list:
 
 ## Getting Started
    
-(include git clone command)
-(include all environment setup steps)
+git clone https://github.com/Virut1316/Project1-ExpenseReimbursementSystem.git
+1.Import 'Project1-ExpenseReimbursementSystem/MavenRepository/' as a Maven project
 
 > Be sure to include BOTH Windows and Unix command  
 > Be sure to mention if the commands only work on a specific platform (eg. AWS, GCP)
